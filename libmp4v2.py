@@ -13,6 +13,15 @@ elif sys.platform.startswith('win'):
     if not os.path.isfile(p):
         p = 'libmp4v2.dll'
     dll = ctypes.CDLL(p)
+elif sys.platform.startswith('darwin'):
+    macportspath = '/opt/local/lib/libmp4v2.dylib'
+    systemdefaultpath = '/usr/lib/libmp4v2.dylib'
+    if os.path.isfile(macportspath): 
+        dll = ctypes.CDLL(macportspath)
+    elif os.path.isfile(systemdefaultpath):
+        dll = ctypes.CDLL(systemdefaultpath)
+    else:
+        raise NotImplementedError("Sorry - currently you can either install mp4v2 (libmp4v2) using MacPorts or put/install the libmp4v2.dylib file into /opt/local/lib/ or /usr/lib/. \nYou can download MacPorts from http://www.macports.org/ and install mp4v2 via 'sudo port install mp4v2'. \nhttps://trac.macports.org/browser/trunk/dports/multimedia/mp4v2/Portfile")
 else:
     raise NotImplementedError('O/S %r not supported' % sys.platform)
 
